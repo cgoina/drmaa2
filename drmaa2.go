@@ -709,27 +709,29 @@ type Job struct {
 	session_name string
 }
 
+type Drmaa2_list_ptr unsafe.Pointer
+
 // JobInfor is a struct which represents the current state of a job.
 type JobInfo struct {
 	// reference to the void* pointer which
 	// is used for extensions
 	Extension         `xml:"-" json:"-"`
-	Id                string        `json:"id"`
-	ExitStatus        int           `json:"exitStatus"`
-	TerminatingSignal string        `json:"terminationSignal"`
-	Annotation        string        `json:"annotation"`
-	State             JobState      `json:"state"`
-	SubState          string        `json:"subState"`
-	AllocatedMachines []string      `json:"allocatedMachines"`
-	SubmissionMachine string        `json:"submissionMachine"`
-	JobOwner          string        `json:"jobOwner"`
-	Slots             int64         `json:"slots"`
-	QueueName         string        `json:"queueName"`
-	WallclockTime     time.Duration `json:"wallockTime"`
-	CPUTime           int64         `json:"cpuTime"`
-	SubmissionTime    time.Time     `json:"submissionTime"`
-	DispatchTime      time.Time     `json:"dispatchTime"`
-	FinishTime        time.Time     `json:"finishTime"`
+	Id                string          `json:"id"`
+	ExitStatus        int             `json:"exitStatus"`
+	TerminatingSignal string          `json:"terminationSignal"`
+	Annotation        string          `json:"annotation"`
+	State             JobState        `json:"state"`
+	SubState          string          `json:"subState"`
+	AllocatedMachines Drmaa2_list_ptr `json:"allocatedMachines"`
+	SubmissionMachine string          `json:"submissionMachine"`
+	JobOwner          string          `json:"jobOwner"`
+	Slots             int64           `json:"slots"`
+	QueueName         string          `json:"queueName"`
+	WallclockTime     time.Duration   `json:"wallockTime"`
+	CPUTime           int64           `json:"cpuTime"`
+	SubmissionTime    time.Time       `json:"submissionTime"`
+	DispatchTime      time.Time       `json:"dispatchTime"`
+	FinishTime        time.Time       `json:"finishTime"`
 }
 
 // CreateJobInfo creates a JobInfo object where all values are initialized
@@ -1117,7 +1119,7 @@ func goJobInfo(cji C.drmaa2_jinfo) JobInfo {
 	var jinfo JobInfo
 	/* convert C job info into Go job info */
 	ji := (C.drmaa2_jinfo_s)(*cji)
-	jinfo.AllocatedMachines = goStringList(ji.allocatedMachines)
+	jinfo.AllocatedMachines = unsafe.Pointer(ji.allocatedMachines)
 	jinfo.Annotation = C.GoString(ji.annotation)
 	jinfo.CPUTime = (int64)(ji.cpuTime)
 	jinfo.ExitStatus = (int)(ji.exitStatus)
