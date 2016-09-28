@@ -1317,9 +1317,6 @@ func (job *Job) WaitTerminated(timeout int64) error {
 func (job *Job) Reap() error {
 	cjob := convertGoJobToC(*job)
 	defer C.drmaa2_j_free(&cjob)
-	if err := C.drmaa2_j_reap(cjob); err != C.DRMAA2_SUCCESS {
-		return makeLastError()
-	}
 	return nil
 }
 
