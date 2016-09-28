@@ -11,6 +11,10 @@ Note: The master branch contains now methods (like job.Reap()) which are specifi
 Those methods might not be (yet) in the underlying DRMAA2 C library. Hence I created a branch which is 
 compatible with older DRMAA2 C implementations (UGE_82_Compatible) which can be used instead.
 
+The master branch is compatible with Univa's 8.4.1 version and David's master branch corresponds to UGE_83_compatible branch.
+In 8.4.1 allocated jobs are no longer a list of strings but they are a drmaa2_list pointer so for now I replaced
+the allocated jobs with an unsafe pointer to get it to compile with 8.4.1.
+
 ## Installation
 
 1. Download / Install Univa Grid Engine (see http://www.univa.com)
