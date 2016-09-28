@@ -1119,7 +1119,7 @@ func goJobInfo(cji C.drmaa2_jinfo) JobInfo {
 	var jinfo JobInfo
 	/* convert C job info into Go job info */
 	ji := (C.drmaa2_jinfo_s)(*cji)
-	jinfo.AllocatedMachines = unsafe.Pointer(ji.allocatedMachines)
+	jinfo.AllocatedMachines = Drmaa2_list_ptr(ji.allocatedMachines)
 	jinfo.Annotation = C.GoString(ji.annotation)
 	jinfo.CPUTime = (int64)(ji.cpuTime)
 	jinfo.ExitStatus = (int)(ji.exitStatus)
